@@ -273,17 +273,17 @@
             Password: UserPassword,
             csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
           },
-          success: function (result) {
-            if (result.indexOf("Error") > -1) {
-              alert(result);
+          success: function (data) {
+            var resultParse = JSON.parse(data);
+            if (resultParse["Status"] == "Error") {
+              alert(resultParse["message"]);
               $("#txtSignUpID").val("");
               $("#txtSignUpPassword").val("");
               $("#txtPasswordConfirm").val("");
             } else {
-              var resultParse = JSON.parse(result);
               $("#thankYou").text(
                 " Thank You ," +
-                  UserFullName +
+                  resultParse["Name"] +
                   ",  Your Registration has been Successfull"
               );
               $("#logindiv").show();
@@ -296,12 +296,12 @@
               $("#txtFullName").val("");
             }
           },
-          error: function (msg) {
-            alert("Your Registration has not been Successfull");
-            $("#txtSignUpID").val("");
-            $("#txtSignUpPassword").val("");
-            $("#txtPasswordConfirm").val("");
-          },
+          // error: function (msg) {
+          //   alert("Your Registration has not been Successfull");
+          //   $("#txtSignUpID").val("");
+          //   $("#txtSignUpPassword").val("");
+          //   $("#txtPasswordConfirm").val("");
+          // },
         });
       }
       function validateLogin() {

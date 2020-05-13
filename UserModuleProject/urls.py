@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-# from UserModule import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('UserModule/',include('UserModule.urls'))
-    # path(r'^UserLogin/UserRegistration/$',views.Create_Users)
+    path('UserModule/',include('UserModule.urls')),
+    path('',include('UserModule.urls'))
 ]
