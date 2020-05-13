@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>login</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <style type="text/css">
+      .tablinksLogin {
+        text-align: right;
+        font-size: 30px;
+        float: left;
+        margin-left: 80px;
+      }
+      .tablinksSignUp {
+        text-align: left;
+        font-size: 30px;
+        float: left;
+        margin-left: 20px;
+      }
+      .row .col-sm-4 p:hover {
+        cursor: pointer;
+      }
+      .form-control {
+        border-color: #009bdf;
+        background-color: transparent;
+      }
+      .form-control::placeholder {
+        color: #009bdf;
+      }
+      #SignButton {
+        background-color: #009bdf;
+        width: 100%;
+        height: 50px;
+      }
+      #LoginButton {
+        background-color: #009bdf;
+        width: 100%;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+          <p
+            class="thankYou"
+            id="thankYou"
+            style="color: #009bdf; text-align: center;"
+          ></p>
+        </div>
+        <div class="col-sm-2"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+          <p
+            class="tablinksLogin"
+            id="tablinksLogin"
+            style="color: #009bdf;"
+            onclick="tablinksLogin();"
+          >
+            Login
+          </p>
+          <p
+            class="tablinksSignUp"
+            id="tablinksSignUp"
+            onclick="tablinksSignUp();"
+          >
+            Sign Up
+          </p>
+        </div>
+        <div class="col-sm-4"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4" id="logindiv">
+          <form role="form">
+            {% csrf_token %}
+            <div class="form-group">
+              <input
+                class="form-control"
+                id="txtLoginName"
+                tabindex="1"
+                placeholder="Login ID"
+                name="login"
+                autocomplete="off"
+                autofocus
+              />
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                id="txtPassword"
+                tabindex="2"
+                placeholder="Password"
+                name="password"
+                type="password"
+                value=""
+                autocomplete="off"
+              />
+            </div>
+            <!-- Change this to a button or input when using this as a form -->
+            <div class="form-group">
+              <button
+                type="button"
+                onclick="Login();"
+                tabindex="3"
+                id="LoginButton"
+                class="btn btn-orange btn-block btn-sm"
+              >
+                Login
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-4" id="SignUpdiv" style="display: none;">
+          <form role="form">
+            {% csrf_token %}
+            <div class="form-group">
+              <input
+                class="form-control"
+                id="txtFullName"
+                tabindex="1"
+                placeholder="Full Name"
+                name="login"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                id="txtSignUpID"
+                tabindex="3"
+                placeholder="User Name"
+                name="login"
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                id="txtSignUpPassword"
+                tabindex="4"
+                placeholder="Password"
+                name="password"
+                type="password"
+                value=""
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                id="txtPasswordConfirm"
+                tabindex="5"
+                placeholder="Confirm Password"
+                name="password"
+                type="password"
+                value=""
+                autocomplete="off"
+              />
+            </div>
+            <div class="form-group">
+              <button
+                type="button"
+                onclick="UserRegister();"
+                tabindex="6"
+                id="SignButton"
+                class="btn btn-orange btn-block btn-sm"
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="col-sm-3"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript">
+      function tablinksLogin() {
+        $("#logindiv").show();
+        $("#SignUpdiv").hide();
+        $("#tablinksLogin").css("color", "#009bdf");
+        $("#tablinksSignUp").css("color", "");
+        $("#txtSignUpID").val("");
+        $("#txtSignUpPassword").val("");
+        $("#txtPasswordConfirm").val("");
+        $("#txtFullName").val("");
+        $("#txtLocationCity").val("");
+      }
+      function tablinksSignUp() {
+        $("#SignUpdiv").show();
+        $("#logindiv").hide();
+        $("#tablinksSignUp").css("color", "#009bdf");
+        $("#tablinksLogin").css("color", "");
+        $("#txtLoginName").val("");
+        $("#txtPassword").val("");
+      }
+      function Login() {
+        if (!validateLogin()) return false;
+        var LoginID, Password;
+        LoginID = $("#txtLoginName").val();
+        Password = $("#txtPassword").val();
+        $.ajax({
+          type: "POST",
+          url: "/UserModule/UserLogin/",
+          dataType: "json",
+          /*string LoginID, string Password*/
+          data: {
+            LoginID: LoginID,
+            Password: Password,
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          },
+          success: function (result) {
+            console.log(result);
+            if (result.indexOf("Error") > -1) {
+              alert(result);
+            } else {
+              var resultParse = JSON.parse(result);
+              if (resultParse.Table.length > 0) {
+                var url = "/Admin/Admin";
+                window.location.replace(url);
+              } else {
+                alert("Invalid Login");
+              }
+            }
+          },
+          error: function (msg) {
+            alert("Invalid Login");
+          },
+        });
+      }
+      function UserRegister() {
+        if (!validateUserRegister()) return false;
+        var UserFullName, SignUpID, UserPassword, ConfirmUserPassword;
+        SignUpID = $("#txtSignUpID").val();
+        UserPassword = $("#txtSignUpPassword").val();
+        ConfirmUserPassword = $("#txtPasswordConfirm").val();
+        UserFullName = $("#txtFullName").val();
+        $.ajax({
+          type: "POST",
+          url: "/UserModule/UserRegistration/",
+          dataType: "json",
+          /*string string strFullName,LoginID, string Password ,string strLocationCity*/
+          data: {
+            strFullName: UserFullName,
+            LoginID: SignUpID,
+            Password: UserPassword,
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          },
+          success: function (result) {
+            if (result.indexOf("Error") > -1) {
+              alert(result);
+              $("#txtSignUpID").val("");
+              $("#txtSignUpPassword").val("");
+              $("#txtPasswordConfirm").val("");
+            } else {
+              var resultParse = JSON.parse(result);
+              $("#thankYou").text(
+                " Thank You ," +
+                  UserFullName +
+                  ",  Your Registration has been Successfull"
+              );
+              $("#logindiv").show();
+              $("#SignUpdiv").hide();
+              $("#tablinksLogin").css("color", "#009bdf");
+              $("#tablinksSignUp").css("color", "");
+              $("#txtSignUpID").val("");
+              $("#txtSignUpPassword").val("");
+              $("#txtPasswordConfirm").val("");
+              $("#txtFullName").val("");
+            }
+          },
+          error: function (msg) {
+            alert("Your Registration has not been Successfull");
+            $("#txtSignUpID").val("");
+            $("#txtSignUpPassword").val("");
+            $("#txtPasswordConfirm").val("");
+          },
+        });
+      }
+      function validateLogin() {
+        LoginID = $("#txtLoginName").val();
+        Password = $("#txtPassword").val();
+        var validForm = true;
+        var errorMsg = "";
+        if (LoginID == "" || LoginID == null) {
+          validForm = false;
+          errorMsg = "Enter Valid Login ID";
+        } else if (Password == "" || Password == null) {
+          validForm = false;
+          errorMsg = "Enter Valid Password";
+        }
+
+        if (validForm) {
+          return true;
+        } else {
+          alert(errorMsg);
+          return false;
+        }
+      }
+      function validateUserRegister() {
+        SignUpID = $("#txtSignUpID").val();
+        UserPassword = $("#txtSignUpPassword").val();
+        ConfirmUserPassword = $("#txtPasswordConfirm").val();
+        UserFullName = $("#txtFullName").val();
+        var validUserRegistration = true;
+        var errorMsg = "";
+        if (UserFullName == "" || UserFullName == null) {
+          validUserRegistration = false;
+          errorMsg = "Enter Valid Full Name";
+        } else if (SignUpID == "" || SignUpID == null) {
+          validUserRegistration = false;
+          errorMsg = "Enter Valid User ID";
+        } else if (UserPassword == "" || UserPassword == null) {
+          validUserRegistration = false;
+          errorMsg = "Enter Valid Password";
+        } else if (ConfirmUserPassword == "" || ConfirmUserPassword == null) {
+          validUserRegistration = false;
+          errorMsg = "Enter Valid Password";
+        } else if (UserPassword != ConfirmUserPassword) {
+          validUserRegistration = false;
+          errorMsg = "Please Enter Same Password";
+        }
+
+        if (validUserRegistration) {
+          return true;
+        } else {
+          alert(errorMsg);
+          return false;
+        }
+      }
+    </script>
+  </body>
+</html>
