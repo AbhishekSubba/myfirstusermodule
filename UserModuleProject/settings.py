@@ -76,20 +76,12 @@ WSGI_APPLICATION = 'UserModuleProject.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'UserAuth',
-    #     'USER' :'postgres',
-    #     'PASSWORD':'Abhi@12345',
-    #     'HOST':'localhost'
-    # }
-
-     'default': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd47f72lcnponnh',
-        'USER' :'xwergkcqvwvtju',
-        'PASSWORD':'d17e5c00e3a79f1e169ee0391f270ff36ab973d7e5f669b41140178431f15f47',
-        'HOST':'ec2-3-91-139-25.compute-1.amazonaws.com'
+        'NAME': 'UserAuth',
+        'USER' :'postgres',
+        'PASSWORD':'Abhi@12345',
+        'HOST':'localhost'
     }
 }
 
