@@ -25,7 +25,7 @@ SECRET_KEY = 'd9vl-ni&cgc0up3cp%6v4rpkyxo2as=vg=+jz@@x_8m_o19!&)'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://djangousermodule.herokuapp.com/','127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
