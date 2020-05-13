@@ -1,1 +1,1 @@
-web: gunicorm UserModuleProject.wsgi
+web: gunicorn UserModuleProject.wsgi
