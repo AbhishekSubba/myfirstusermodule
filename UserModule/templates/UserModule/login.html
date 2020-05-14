@@ -241,7 +241,8 @@
               alert(data["message"]);
             } else {
               if (data["Status"] == "Success") {
-                var url = "http://127.0.0.1:8000/UserModule/GithubAuth/";
+                var url =
+                  "https://myfirstusermodule.herokuapp.com/UserModule/GithubAuth/";
                 window.location.replace(url);
               } else {
                 alert("Invalid Login");
