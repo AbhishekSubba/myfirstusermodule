@@ -236,14 +236,12 @@
             Password: Password,
             csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
           },
-          success: function (result) {
-            console.log(result);
-            if (result.indexOf("Error") > -1) {
-              alert(result);
+          success: function (data) {
+            if (data["Status"] == "Error") {
+              alert(data["message"]);
             } else {
-              var resultParse = JSON.parse(result);
-              if (resultParse.Table.length > 0) {
-                var url = "/Admin/Admin";
+              if (data["Status"] == "Success") {
+                var url = "http://127.0.0.1:8000/UserModule/GithubAuth/";
                 window.location.replace(url);
               } else {
                 alert("Invalid Login");
