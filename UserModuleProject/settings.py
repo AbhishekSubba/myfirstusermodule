@@ -76,13 +76,13 @@ WSGI_APPLICATION = 'UserModuleProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'UserAuth',
-#         'USER': 'postgres'
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'UserAuth',
+        'USER': 'postgres'
+    }
+}
 
 
 DATABASES['default'] = dj_database_url.config(conn_max_age=600)
