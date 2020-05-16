@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
-from UserModule.models import tblUser
+from UserModule.models import *
 import json
 from django.core import serializers
+import requests
 # Create your views here.
 
 
@@ -36,6 +37,7 @@ def LoginValidate(request):
     if request.method == 'POST':
         LoginID = request.POST['LoginID']
         Password = request.POST['Password']
+        request.session['UserLoginid'] = LoginID
         data = {
             # 'message': serializers.serialize('json', tblUser.objects.filter(username=LoginID))
         }
@@ -60,3 +62,51 @@ def LoginValidate(request):
 
 def admin(request):
     return render(request, 'UserModule/admin.html')
+
+
+# def GithubAuthentication(request):
+#     client_id = "ba009bdec135aa5660a5"
+#     client_secret = "6f74d052b296924bbb7fc657e5d42ea285920a8d"
+#     redirect_uri = "https://myfirstusermodule.herokuapp.com/login/callback"
+
+#     return HttpResponse('')
+
+
+def GenerateAccesstoken(request):
+    if request.method == 'GET':
+        code = request.GET['code']
+        client_id = "ba009bdec135aa5660a5"
+        client_secret = "6f74d052b296924bbb7fc657e5d42ea285920a8d"
+        # redirect_uri = "http://127.0.0.1:8000/UserModule/callback/"
+        redirect_uri = "https://myfirstusermodule.herokuapp.com/UserModule/callback/"
+        token_url = "https://github.com/login/oauth/access_token?client_id=" + client_id + \
+            "&redirect_uri=" + redirect_uri + "&client_secret=" + \
+            client_secret + "&code=" + code
+        headers = {"content-type": "application/x-www-form-urlencoded",
+                   "Accept": "application/json"}
+        response = requests.post(token_url, headers=headers)
+        requet_token = response.content.decode()
+        requet_tokenJson = json.loads(requet_token)
+        access_token = requet_tokenJson["access_token"]
+        GetGithubUserDetails(request, code, access_token)
+        username = request.session.get('UserLoginid')
+    return render(request, 'UserModule/GithubAuthSuccess.html', {'username': username})
+
+
+def GetGithubUserDetails(request, code, access_token):
+    urlForUser = "https://api.github.com/user?access_token=" + access_token
+    headers = {"content-type": "application/x-www-form-urlencoded",
+               "Accept": "application/json"}
+    response = requests.get(urlForUser, headers=headers)
+    userDetails = json.loads(response.content.decode())
+    act = tblAccess_token(
+        username=request.session.get('UserLoginid'),
+        Code=code,
+        access_token=access_token,
+        githublogin=userDetails["login"],
+        githubfullname=userDetails["name"],
+        emailid=userDetails["email"],
+        location=userDetails["location"],
+        Company=userDetails["company"]
+    )
+    act.save()

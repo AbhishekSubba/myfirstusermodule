@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>admin</title>
+    <title>Github Auth Success</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
@@ -24,8 +24,7 @@
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
           <p>
-            Hello , {% request.session.get("") %} , please click below button
-            for Authentication with GitHub to Access My Apps
+            Hello , {{username}} , You are now Authorises to my App
           </p>
         </div>
         <div class="col-sm-4"></div>
@@ -34,15 +33,7 @@
         <div class="col-sm-4"></div>
         <div class="col-sm-4">
           <div class="form-group">
-            <button
-              type="button"
-              onclick="GitHubAuthBtn();"
-              tabindex="3"
-              id="GithubAuthBtn"
-              class="btn btn-orange btn-block btn-sm"
-            >
-              GitHub Authentication
-            </button>
+            <p>Success</p>
           </div>
         </div>
         <div class="col-sm-4"></div>
@@ -64,20 +55,6 @@
       integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
       crossorigin="anonymous"
     ></script>
-    <script type="text/javascript">
-      function GitHubAuthBtn() {
-        client_id = "ba009bdec135aa5660a5";
-        // redirect_uri = "http://127.0.0.1:8000/UserModule/callback/";
-        redirect_uri =
-          "https://myfirstusermodule.herokuapp.com/UserModule/callback/";
-        var urld =
-          "https://github.com/login/oauth/authorize" +
-          "?client_id=" +
-          client_id +
-          "&scope=repo&redirect_uri=" +
-          redirect_uri;
-        window.location.replace(urld);
-      }
-    </script>
+    <script type="text/javascript"></script>
   </body>
 </html>
