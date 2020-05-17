@@ -21,6 +21,6 @@ urlpatterns = [
     path('UserModule/', include('UserModule.urls')),
     path('', include('UserModule.urls')),
     path('UserModule/GithubAuth/', include('UserModule.urls')),
-    # path('UserModule/GithubAuthBtnurl/', include('UserModule.urls')),
+    path('UserModule/getLogs/', include('UserModule.urls')),
     path('UserModule/callback/', include('UserModule.urls'))
 ]

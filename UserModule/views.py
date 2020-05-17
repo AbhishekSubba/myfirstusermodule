@@ -61,15 +61,8 @@ def LoginValidate(request):
 
 
 def admin(request):
-    return render(request, 'UserModule/admin.html')
-
-
-# def GithubAuthentication(request):
-#     client_id = "ba009bdec135aa5660a5"
-#     client_secret = "6f74d052b296924bbb7fc657e5d42ea285920a8d"
-#     redirect_uri = "https://myfirstusermodule.herokuapp.com/login/callback"
-
-#     return HttpResponse('')
+    username = request.session.get('UserLoginid')
+    return render(request, 'UserModule/admin.html', {'username': username})
 
 
 def GenerateAccesstoken(request):
@@ -110,3 +103,26 @@ def GetGithubUserDetails(request, code, access_token):
         Company=userDetails["company"]
     )
     act.save()
+
+
+def findlogs(request):
+    return render(request, 'UserModule/logs.html')
+
+
+def getLogsForWebhooks(request):
+    username = request.session.get('UserLoginid')
+    data = tblAccess_token.objects.all()
+    datajsn = serializers.serialize('json', data)
+    # print(datajsn)
+    datajsn = json.loads(datajsn)
+    for d in datajsn:
+        del d['pk']
+        del d['model']
+    parsed_json = json.dumps(datajsn, indent=4, sort_keys=True)
+    parsed_json = json.loads(parsed_json)
+    parsed_jsonobj = {}
+    length = len(parsed_json)
+    for i in range(0, length):
+        parsed_jsonobj[i] = parsed_json[i]["fields"]
+    finaldata = {'length': length, 'data': parsed_jsonobj}
+    return JsonResponse(finaldata, content_type="application/json", safe=False)

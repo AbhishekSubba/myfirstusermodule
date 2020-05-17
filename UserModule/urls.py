@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.list_item),
     path('UserLogin/', views.LoginValidate),
     path('GithubAuth/', views.admin),
-    # path('GithubAuthBtnurl/', views.GithubAuthentication),
-    path('callback/', views.GenerateAccesstoken)
+    path('findlogs/', views.findlogs),
+    path('callback/', views.GenerateAccesstoken),
+    path('getLogs/', views.getLogsForWebhooks)
 ]
