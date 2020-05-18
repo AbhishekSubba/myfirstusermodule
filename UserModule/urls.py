@@ -8,5 +8,6 @@ urlpatterns = [
     path('GithubAuth/', views.admin),
     path('findlogs/', views.findlogs),
     path('callback/', views.GenerateAccesstoken),
-    path('getLogs/', views.getLogsForWebhooks)
+    path('getLogs/', views.getLogsForWebhooks),
+    path('github/', views.getPayload)
 ]

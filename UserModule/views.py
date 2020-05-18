@@ -4,6 +4,8 @@ from UserModule.models import *
 import json
 from django.core import serializers
 import requests
+from django.views.decorators.csrf import csrf_exempt
+from decouple import config
 # Create your views here.
 
 
@@ -62,14 +64,14 @@ def LoginValidate(request):
 
 def admin(request):
     username = request.session.get('UserLoginid')
-    return render(request, 'UserModule/admin.html', {'username': username})
+    return render(request, 'UserModule/admin.html', {'username': username, 'client_id': config('client_id')})
 
 
 def GenerateAccesstoken(request):
     if request.method == 'GET':
         code = request.GET['code']
-        client_id = "ba009bdec135aa5660a5"
-        client_secret = "6f74d052b296924bbb7fc657e5d42ea285920a8d"
+        client_id = config('client_id')
+        client_secret = config('client_secret')
         # redirect_uri = "http://127.0.0.1:8000/UserModule/callback/"
         redirect_uri = "https://myfirstusermodule.herokuapp.com/UserModule/callback/"
         token_url = "https://github.com/login/oauth/access_token?client_id=" + client_id + \
@@ -110,19 +112,53 @@ def findlogs(request):
 
 
 def getLogsForWebhooks(request):
-    username = request.session.get('UserLoginid')
-    data = tblAccess_token.objects.all()
-    datajsn = serializers.serialize('json', data)
-    # print(datajsn)
-    datajsn = json.loads(datajsn)
-    for d in datajsn:
-        del d['pk']
-        del d['model']
-    parsed_json = json.dumps(datajsn, indent=4, sort_keys=True)
-    parsed_json = json.loads(parsed_json)
-    parsed_jsonobj = {}
-    length = len(parsed_json)
-    for i in range(0, length):
-        parsed_jsonobj[i] = parsed_json[i]["fields"]
-    finaldata = {'length': length, 'data': parsed_jsonobj}
-    return JsonResponse(finaldata, content_type="application/json", safe=False)
+    if request.method == 'POST':
+        ID = request.POST['ID']
+        username = request.session.get('UserLoginid')
+        validUser = False
+        if username == "abhi":
+            validUser = True
+        if ID == "1":
+            data = tblAccess_token.objects.all()
+            datajsn = serializers.serialize('json', data)
+            datajsn = json.loads(datajsn)
+            for d in datajsn:
+                del d['pk']
+                del d['model']
+            parsed_json = json.dumps(datajsn, indent=4, sort_keys=True)
+            parsed_json = json.loads(parsed_json)
+            parsed_jsonobj = {}
+            length = len(parsed_json)
+            for i in range(0, length):
+                parsed_jsonobj[i] = parsed_json[i]["fields"]
+            finaldata = {'length': length,
+                         'data': parsed_jsonobj, 'Success': validUser}
+            return JsonResponse(finaldata, content_type="application/json", safe=False)
+        else:
+            data = tblWebhooks.objects.all()
+            datajsn = serializers.serialize('json', data)
+            datajsn = json.loads(datajsn)
+            for d in datajsn:
+                del d['pk']
+                del d['model']
+            parsed_json = json.dumps(datajsn, indent=4, sort_keys=True)
+            parsed_json = json.loads(parsed_json)
+            parsed_jsonobj = {}
+            length = len(parsed_json)
+            for i in range(0, length):
+                parsed_jsonobj[i] = parsed_json[i]["fields"]
+            finaldata = {'length': length,
+                         'data': parsed_jsonobj, 'Success': validUser}
+            return JsonResponse(finaldata, content_type="application/json", safe=False)
+
+
+@csrf_exempt
+def getPayload(request):
+    if request.method == 'POST':
+        if request.headers['Content-Type'] == 'application/json':
+            jsondata = request.body
+            parsed_json = json.loads(jsondata)
+            print(parsed_json)
+            webhook = tblWebhooks(webhooks=parsed_json)
+            webhook.save()
+            return JsonResponse(parsed_json, content_type="application/json", safe=False)

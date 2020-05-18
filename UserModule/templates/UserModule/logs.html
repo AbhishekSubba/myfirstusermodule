@@ -46,7 +46,7 @@
               id="logcheckid"
               class="btn btn-orange btn-block btn-sm"
             >
-              Logs
+              Authorization Logs
             </button>
           </div>
         </div>
@@ -70,19 +70,7 @@
         <div class="col-sm-2"></div>
         <div class="col-sm-8" id="reportLive">
           <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Username</th>
-                <th scope="col">Code</th>
-                <th scope="col">access_token</th>
-                <th scope="col">Github login</th>
-                <th scope="col">Github FullName</th>
-                <th scope="col">Emailid</th>
-                <th scope="col">Company</th>
-                <th scope="col">Location</th>
-              </tr>
-            </thead>
+            <thead></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -117,38 +105,88 @@
             csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
           },
           success: function (result) {
-            var trEls = "";
-            var trElsLive = "";
-            for (var j = 0; j < result.length; j++) {
-              var location = result.data[j].location;
-              var githubfullname = result.data[j].githubfullname;
-              trEls += "<tr>";
-              trEls += "<th scope='row'>" + j + "</td>";
-              trEls += "<td>" + result.data[j].username + "</td>";
-              trEls += "<td> " + result.data[j].Code + "</td>";
-              trEls += "<td>" + result.data[j].access_token + "</td>";
-              trEls += "<td>" + result.data[j].githublogin + "</td>";
-              trEls +=
-                "<td> " + githubfullname != null
-                  ? githubfullname
-                  : "" + "</th>";
-              trEls += "<td>" + location === null ? " " : location + "</td>";
-              trEls +=
-                "<td>" + result.data[j].emailid != null
-                  ? result.data[j].emailid
-                  : "" + "</td>";
-              trEls +=
-                "<td> " + result.data[j].Company != null
-                  ? result.data[j].Company
-                  : "" + "</td>";
-              trEls +=
-                "<td>" + result.data[j].location != null
-                  ? result.data[j].location
-                  : "" + "</td>";
-              trEls += "</tr>";
+            if (result.Success == false) {
+              alert("Logs is visible for Admin user");
+            } else {
+              var trEls = "";
+              var trElsLive = "";
+              trElsLive += "<tr>";
+              trElsLive += "<th scope='col'>" + "#" + "</th>";
+              trElsLive += "<th scope='col'>" + "Username" + "</th>";
+              trElsLive += "<th scope='col'>" + "Code" + "</th>";
+              trElsLive += "<th scope='col'>" + "access_token" + "</th>";
+              trElsLive += "<th scope='col'>" + "Github login" + "</th>";
+              trElsLive += "<th scope='col'>" + "Github FullName" + "</th>";
+              trElsLive += "<th scope='col'>" + "Emailid " + "</th>";
+              trElsLive += "<th scope='col'>" + "Company" + "</th>";
+              trElsLive += "<th scope='col'>" + "Location" + "</th>";
+              trElsLive += "</tr>";
+              for (var j = 0; j < result.length; j++) {
+                var location = result.data[j].location;
+                var githubfullname = result.data[j].githubfullname;
+                trEls += "<tr>";
+                trEls += "<th scope='row'>" + (j + 1) + "</td>";
+                trEls += "<td>" + result.data[j].username + "</td>";
+                trEls += "<td> " + result.data[j].Code + "</td>";
+                trEls += "<td>" + result.data[j].access_token + "</td>";
+                trEls += "<td>" + result.data[j].githublogin + "</td>";
+                trEls +=
+                  "<td> " + githubfullname != null
+                    ? githubfullname
+                    : "" + "</th>";
+                trEls += "<td>" + location === null ? " " : location + "</td>";
+                trEls +=
+                  "<td>" + result.data[j].emailid != null
+                    ? result.data[j].emailid
+                    : "" + "</td>";
+                trEls +=
+                  "<td> " + result.data[j].Company != null
+                    ? result.data[j].Company
+                    : "" + "</td>";
+                trEls +=
+                  "<td>" + result.data[j].location != null
+                    ? result.data[j].location
+                    : "" + "</td>";
+                trEls += "</tr>";
+              }
+              trElsLive += trEls;
+              $("#reportLive table tbody").html(trElsLive);
             }
-            trElsLive += trEls;
-            $("#reportLive table tbody").html(trElsLive);
+          },
+        });
+      }
+
+      function webHook() {
+        var ID = 2;
+        $.ajax({
+          type: "POST",
+          url: "/UserModule/getLogs/",
+          dataType: "json",
+          data: {
+            ID: ID,
+            csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+          },
+          success: function (result) {
+            if (result.Success == false) {
+              alert("Logs is visible for Admin user");
+            } else {
+              var trEls = "";
+              var trElsLive = "";
+              trElsLive += "<tr>";
+              trElsLive += "<th scope='col'>" + "Webhooks" + "</th>";
+              trElsLive += "</tr>";
+              for (var j = 0; j < result.length; j++) {
+                trEls += "<tr>";
+                trEls += "<th scope='row'>" + (j + 1) + "</td>";
+                trEls +=
+                  "<td><pre>" +
+                  JSON.stringify(result.data[0], null, 4) +
+                  "</pre></td>";
+                trEls += "</tr>";
+              }
+              trElsLive += trEls;
+              $("#reportLive table tbody").html(trElsLive);
+            }
           },
         });
       }

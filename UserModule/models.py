@@ -1,5 +1,5 @@
 from django.db import models
-
+import jsonfield
 # Create your models here.
 
 
@@ -18,3 +18,7 @@ class tblAccess_token(models.Model):
     emailid = models.CharField(max_length=200, null=True, blank=True)
     location = models.CharField(max_length=200, null=True, blank=True)
     Company = models.CharField(max_length=200, null=True, blank=True)
+
+
+class tblWebhooks(models.Model):
+    webhooks = jsonfield.JSONField()
